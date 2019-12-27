@@ -20,7 +20,8 @@ def make_dir(dir):
 
 
 for book in books:
-    if "2016" in book or "2017" in book or "2018" in book or "2019" in book:
+    # if "2016" in book or "2017" in book or "2018" in book or "2019" in book:
+    if "2017" in book or "2018" in book or "2019" in book:
         year = book.split("-")[-1]
         book_page = requests.get(BASE_URL + book)
         tree = html.fromstring(book_page.content)
@@ -34,4 +35,8 @@ for book in books:
                 dir_save = os.path.join(cwd, "nips", year)
                 make_dir(dir_save)
                 local = os.path.join(dir_save, local)
-                urllib.request.urlretrieve(BASE_URL + link, local)
+                if not os.path.exists(local):
+                    print(">> downloading", local)
+                    urllib.request.urlretrieve(BASE_URL + link, local)
+                else:
+                    print(">> skipping", local)
